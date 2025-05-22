@@ -8,7 +8,8 @@ public class PagedList<T> : List<T>
     public PagedList(IEnumerable<T> items, int count, int pageNumber, int pageSize)
     {
         CurrentPage = pageNumber;
-        TotalPages = (int)Math.Ceiling(count / (double)pageSize);
+        // Fixed calculation - when the count is 10 and pageSize is 5, this should be 2
+        TotalPages = (int)Math.Ceiling((double)count / pageSize);
         PageSize = pageSize;
         TotalCount = count;
         AddRange(items);
