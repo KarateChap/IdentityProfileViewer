@@ -7,19 +7,18 @@ public class UserIdentity
 {
     public int Id { get; set; }
 
-    [Required]
-    public string UserId { get; set; } = string.Empty;
-
-    [Required]
     [StringLength(100)]
-    public string FullName { get; set; } = string.Empty;
+    public required string UserId { get; set; } = string.Empty;
 
-    [Required]
+    [StringLength(100)]
+    public required string FullName { get; set; } = string.Empty;
+
     [EmailAddress]
-    public string Email { get; set; } = string.Empty;
+    [StringLength(100)]
+    public required string Email { get; set; } = string.Empty;
 
-    [Required]
-    public string SourceSystem { get; set; } = string.Empty;
+    [StringLength(100)]
+    public required string SourceSystem { get; set; } = string.Empty;
 
     public DateTime LastUpdated { get; set; }
 

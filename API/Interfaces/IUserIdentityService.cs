@@ -1,12 +1,13 @@
 using System;
 using API.DTO;
+using API.Helpers;
 using API.Models;
 
-namespace API.Services;
+namespace API.Interfaces;
 
 public interface IUserIdentityService
 {
     Task<UserIdentity?> GetUserIdentityAsync(int id);
     Task<UserIdentity?> UpdateUserIdentityAsync(int id, UserIdentityUpdateDto updateDto);
-    Task<IEnumerable<UserIdentity>> GetAllUserIdentitiesAsync();
+    Task<PagedList<UserIdentity>> GetAllUserIdentitiesAsync(UserIdentityParams userIdentityParams);
 }

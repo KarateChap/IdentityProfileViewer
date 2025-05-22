@@ -1,18 +1,23 @@
 using System;
 using API.Data;
 using API.DTO;
+using API.Helpers;
+using API.Interfaces;
 using API.Models;
+using API.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Services;
 
 public class UserIdentityService : IUserIdentityService
 {
-    private readonly UserIdentityContext _context;
+    private readonly DataContext _context;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public UserIdentityService(UserIdentityContext context)
+    public UserIdentityService(DataContext context, IHttpContextAccessor httpContextAccessor)
     {
         _context = context;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<UserIdentity?> GetUserIdentityAsync(int id)
@@ -20,9 +25,26 @@ public class UserIdentityService : IUserIdentityService
         return await _context.UserIdentities.FindAsync(id);
     }
 
-    public async Task<IEnumerable<UserIdentity>> GetAllUserIdentitiesAsync()
+    public async Task<PagedList<UserIdentity>> GetAllUserIdentitiesAsync(UserIdentityParams userIdentityParams)
     {
-        return await _context.UserIdentities.ToListAsync();
+        var userId = _httpContextAccessor.HttpContext?.User.GetUserId();
+
+        var query = _context.UserIdentities.AsQueryable();
+
+        if (!string.IsNullOrEmpty(userIdentityParams.UserId))
+        {
+            query = query.Where(x => x.UserId == userIdentityParams.UserId);
+        }
+
+        if (!string.IsNullOrEmpty(userIdentityParams.SearchString) && userIdentityParams.SearchString != "all")
+        {
+            query = query.Where(x =>
+            x.FullName.ToLower().Contains(userIdentityParams.SearchString.ToLower()) ||
+            x.Email.ToLower().Contains(userIdentityParams.SearchString.ToLower()) ||
+            x.SourceSystem.ToLower().Contains(userIdentityParams.SearchString.ToLower()));
+        }
+
+        return await PagedList<UserIdentity>.CreateAsync(query, userIdentityParams.PageNumber, userIdentityParams.PageSize);
     }
 
     public async Task<UserIdentity?> UpdateUserIdentityAsync(int id, UserIdentityUpdateDto updateDto)
