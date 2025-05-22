@@ -9,7 +9,7 @@ public static class SeedData
     {
         if (context.UserIdentities.Any())
         {
-            return; // DB has been seeded
+            return;
         }
 
         var userIdentities = new UserIdentity[]

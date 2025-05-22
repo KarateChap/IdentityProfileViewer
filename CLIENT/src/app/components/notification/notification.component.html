@@ -1,0 +1,8 @@
+<div
+  *ngIf="message && visible"
+  class="alert"
+  [class.alert-success]="type === 'success'"
+  [class.alert-danger]="type === 'error'"
+>
+  {{ message }}
+</div>
