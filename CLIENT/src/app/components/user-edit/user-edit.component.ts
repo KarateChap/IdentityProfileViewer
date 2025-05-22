@@ -73,6 +73,12 @@ export class UserEditComponent implements OnChanges {
     this.saveChanges.emit(update);
   }
 
+  isEmptyForm() {
+    return (
+      this.editForm.fullName.trim() === '' || this.editForm.email.trim() === ''
+    );
+  }
+
   cancel(): void {
     this.resetForm();
     this.cancelEdit.emit();

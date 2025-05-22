@@ -10,7 +10,7 @@ import {
   providedIn: 'root',
 })
 export class UserIdentityService {
-  private apiUrl = 'https://localhost:5001/api/useridentities';
+  private apiUrl = 'https://localhost:5001/api/useridentities'; // I can create an environment variables to store this securely but for the sake of simplicity, I add it here as it is.
 
   constructor(private http: HttpClient) {}
 

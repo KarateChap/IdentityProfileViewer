@@ -48,7 +48,7 @@ export class UserIdentityComponent implements OnInit {
         }
       },
       error: (error) => {
-        this.showMessage('Failed to load user identities: ' + error, 'error');
+        this.showMessage('Failed to load user identities: ' + '', 'error');
         this.loading = false;
       },
     });
@@ -95,10 +95,15 @@ export class UserIdentityComponent implements OnInit {
 
           this.editMode = false;
           this.loading = false;
-          this.showMessage('User identity updated successfully', 'success');
+          this.showMessage(
+            Object.keys(update).length === 0
+              ? 'No changes detected'
+              : 'User identity updated successfully',
+            Object.keys(update).length === 0 ? 'error' : 'success'
+          );
         },
         error: (error) => {
-          this.showMessage('Failed to update user identity: ' + error, 'error');
+          this.showMessage('Failed to update user identity: ' + '', 'error');
           this.loading = false;
         },
       });
