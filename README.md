@@ -17,6 +17,12 @@ cd API
 dotnet watch
 ```
 
+### 1.1 Run Tests
+
+```bash
+dotnet test
+```
+
 ✅ API runs on: `https://localhost:5001`
 
 ### 2. Start Frontend (New Terminal)
@@ -25,6 +31,13 @@ dotnet watch
 cd CLIENT
 npm install
 ng serve -o
+```
+
+### 2. Run Tests
+
+```bash
+cd CLIENT
+ng test
 ```
 
 ✅ App opens at: `http://localhost:4200`
