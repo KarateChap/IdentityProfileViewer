@@ -1,0 +1,114 @@
+<div
+  class="w-[100vw] h-[100vh] flex flex-col gap-6 justify-center items-center"
+>
+  <h1 class="text-2xl font-bold">Welcome to Identity Profile Viewer 👋</h1>
+
+  <form [formGroup]="authForm" (ngSubmit)="loginOrRegister()">
+    <fieldset class="fieldset border-base-300 rounded-box w-xs border p-4">
+      <legend class="fieldset-legend">
+        {{ isRegister ? "Sign Up" : "Sign In" }}
+      </legend>
+
+      <label class="label">Email</label>
+      <input
+        type="email"
+        class="input"
+        [ngClass]="{
+          'input-error':
+            authForm.get('email')?.invalid && authForm.get('email')?.touched
+        }"
+        placeholder="Email"
+        id="email"
+        formControlName="email"
+      />
+      @if(authForm.get('email')?.invalid && authForm.get('email')?.touched) {
+      <div class="text-error text-sm mt-1">
+        @if(authForm.get('email')?.errors?.['required']) {
+        <div>Email is required</div>
+        } @if(authForm.get('email')?.errors?.['email']) {
+        <div>Please enter a valid email address</div>
+        }
+      </div>
+      }
+
+      <label class="label">Password</label>
+      <input
+        type="password"
+        class="input"
+        [ngClass]="{
+          'input-error':
+            authForm.get('password')?.invalid &&
+            authForm.get('password')?.touched
+        }"
+        placeholder="Password"
+        id="password"
+        formControlName="password"
+      />
+      @if(authForm.get('password')?.invalid &&
+      authForm.get('password')?.touched) {
+      <div class="text-error text-sm mt-1">
+        @if(authForm.get('password')?.errors?.['required']) {
+        <div>Password is required</div>
+        } @if(isRegister) { @if(authForm.get('password')?.errors?.['minlength'])
+        {
+        <div>Password must be at least 6 characters</div>
+        } @if(authForm.get('password')?.errors?.['maxlength']) {
+        <div>Password cannot exceed 20 characters</div>
+        } @if(authForm.get('password')?.errors?.['hasDigit']) {
+        <div>Password must contain at least one number</div>
+        } @if(authForm.get('password')?.errors?.['hasUppercase']) {
+        <div>Password must contain at least one uppercase letter</div>
+        } }
+      </div>
+      } @if(isRegister) {
+      <label class="label">Confirm Password</label>
+      <input
+        type="password"
+        class="input"
+        [ngClass]="{
+          'input-error':
+            authForm.get('confirmPassword')?.invalid &&
+            authForm.get('confirmPassword')?.touched
+        }"
+        placeholder="Confirm Password"
+        id="confirmPassword"
+        formControlName="confirmPassword"
+      />
+      @if(authForm.get('confirmPassword')?.invalid &&
+      authForm.get('confirmPassword')?.touched) {
+      <div class="text-error text-sm mt-1">
+        @if(authForm.get('confirmPassword')?.errors?.['required']) {
+        <div>Please confirm your password</div>
+        } @if(authForm.get('confirmPassword')?.errors?.['isMatching']) {
+        <div>Passwords do not match</div>
+        }
+      </div>
+      } }
+
+      <div class="flex justify-between items-center mt-4">
+        <button
+          type="button"
+          class="btn btn-ghost btn-sm w-full"
+          (click)="toggleForm()"
+        >
+          {{
+            isRegister
+              ? "Already have an account? Sign In"
+              : "Need an account? Sign Up"
+          }}
+        </button>
+      </div>
+
+      <button
+        class="btn btn-success mt-4 w-full"
+        [class.btn-disabled]="!authForm.valid"
+        type="submit"
+      >
+        @if(busyService.isLoading()) {
+        <span class="loading loading-spinner"></span>
+        }
+        {{ isRegister ? "Sign Up" : "Sign In" }}
+      </button>
+    </fieldset>
+  </form>
+</div>

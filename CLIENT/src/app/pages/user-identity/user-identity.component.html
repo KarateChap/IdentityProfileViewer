@@ -1,0 +1,109 @@
+<div class="container mx-auto px-4 min-h-screen relative">
+  <!-- Header -->
+  <div class="w-full text-center py-8">
+    <h1 class="text-3xl font-bold">🫆 User Identity Profile Viewer</h1>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div
+    *ngIf="busyService.isLoading()"
+    class="flex justify-center items-center py-8"
+  >
+    <span class="loading loading-spinner loading-lg text-primary"></span>
+  </div>
+
+  <!-- Main Content -->
+  <div
+    class="grid grid-cols-1 md:grid-cols-12 gap-6 py-4"
+    *ngIf="!busyService.isLoading()"
+  >
+    <!-- User List Section -->
+    <div class="md:col-span-4">
+      <app-user-list
+        [userIdentities]="userIdentities"
+        [selectedUserId]="selectedUser ? selectedUser.id : null"
+        [loading]="busyService.isLoading()"
+        [pagination]="pagination"
+        [loadingMore]="loadingMore"
+        (userSelected)="onUserSelected($event)"
+        (loadMore)="onLoadMore()"
+      ></app-user-list>
+
+      <!-- Pagination Controls -->
+      <div
+        class="flex justify-center mt-4"
+        *ngIf="pagination && pagination.totalPages > 1"
+      >
+        <div class="join">
+          <button
+            class="join-item btn btn-sm"
+            [disabled]="
+              pagination.currentPage === 1 || busyService.isLoading()
+            "
+            (click)="onPageChange(pagination!.currentPage - 1)"
+          >
+            «
+          </button>
+
+          <ng-container
+            *ngFor="let i of getPageNumbers(); trackBy: trackByIndex"
+          >
+            <button
+              class="join-item btn btn-sm"
+              [class.btn-active]="pagination.currentPage === i + 1"
+              [disabled]="busyService.isLoading()"
+              (click)="onPageChange(i + 1)"
+            >
+              {{ i + 1 }}
+            </button>
+          </ng-container>
+
+          <button
+            class="join-item btn btn-sm"
+            [disabled]="
+              pagination.currentPage === pagination.totalPages ||
+              busyService.isLoading()
+            "
+            (click)="onPageChange(pagination!.currentPage + 1)"
+          >
+            »
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="md:col-span-8" *ngIf="selectedUser">
+      <div *ngIf="!editMode">
+        <app-user-details
+          [user]="selectedUser"
+          (editRequested)="onEditRequested()"
+        ></app-user-details>
+      </div>
+
+      <div *ngIf="editMode">
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <h2 class="card-title">Edit User</h2>
+            <app-user-edit
+              [user]="selectedUser"
+              [loading]="busyService.isLoading()"
+              (saveChanges)="onSaveChanges($event)"
+              (cancelEdit)="onCancelEdit()"
+            ></app-user-edit>
+          </div>
+        </div>
+      </div>
+
+      <!-- Test Errors Panel - Only visible to Super Admin users -->
+      <div *ngIf="checkSuperAdminRole() && !editMode" class="mt-6">
+        <app-test-errors></app-test-errors>
+      </div>
+    </div>
+  </div>
+
+  <div class="hidden md:block text-center absolute bottom-4 w-full">
+    <p class="text-sm text-gray-500">
+      ©️ Copyright 2025 Ralph Gabriel Mariano. All rights reserved. 🚀
+    </p>
+  </div>
+</div>

@@ -1,0 +1,66 @@
+<div class="card bg-base-100 shadow-lg">
+  <div class="card-body">
+    <h2 class="card-title">👨🏻‍🦱 Select User</h2>
+
+    <div
+      *ngIf="busyService.isLoading() && !loadingMore"
+      class="flex justify-center py-4"
+    >
+      <span class="loading loading-spinner loading-md"></span>
+    </div>
+
+    <div class="space-y-2 mt-4" *ngIf="userIdentities.length > 0">
+      @for(user of userIdentities; track trackByUser(user, $index)) {
+      <div
+        class="flex items-center p-3 rounded-lg cursor-pointer transition-all duration-200"
+        [class.bg-primary]="selectedUserId === user.id"
+        [class.text-primary-content]="selectedUserId === user.id"
+        [class.bg-base-200]="selectedUserId !== user.id"
+        (click)="selectUser(user)"
+      >
+        <img
+          src="https://i.pravatar.cc/48?u={{ user.id }}"
+          alt="User Avatar"
+          class="w-8 h-8 rounded-full mr-3"
+        />
+        <div class="flex flex-col">
+          <h3 class="font-bold">{{ user.fullName }}</h3>
+          <p class="text-sm mt-1">{{ user.email }}</p>
+        </div>
+        <div class="flex justify-between items-center ml-auto">
+          <span class="badge badge-sm">{{ user.sourceSystem }}</span>
+        </div>
+      </div>
+      }
+
+      <div
+        *ngIf="pagination && !loadingMore"
+        class="text-center text-sm opacity-70 py-2"
+      >
+        Showing {{ userIdentities.length }} of {{ pagination.totalItems }} users
+        (Page {{ pagination.currentPage }} of {{ pagination.totalPages }})
+      </div>
+    </div>
+
+    <!-- No users message -->
+    <div
+      *ngIf="!loading && userIdentities.length === 0"
+      class="alert alert-info mt-3"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        class="stroke-current shrink-0 w-6 h-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+        ></path>
+      </svg>
+      <span>No users found.</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,97 @@
+<div *ngIf="user" class="bg-base-200 p-4 mb-4 rounded-lg">
+  <h3 class="font-bold text-lg">Editing User:</h3>
+  <div class="text-sm opacity-80">
+    <p><span class="font-medium">Name:</span> {{ user.fullName }}</p>
+    <p><span class="font-medium">Email:</span> {{ user.email }}</p>
+  </div>
+</div>
+
+<form [formGroup]="editForm" (ngSubmit)="submit()" novalidate class="space-y-6">
+  <!-- Full Name -->
+  <div class="form-control w-full">
+    <label class="label">
+      <span class="label-text font-medium">Full Name</span>
+    </label>
+    <input
+      type="text"
+      id="fullName"
+      class="input input-bordered w-full"
+      [ngClass]="{
+        'input-error':
+          editForm.get('fullName')?.invalid &&
+          (editForm.get('fullName')?.touched || formSubmitted)
+      }"
+      formControlName="fullName"
+    />
+    <div
+      *ngIf="
+        editForm.get('fullName')?.invalid &&
+        (editForm.get('fullName')?.touched || formSubmitted)
+      "
+      class="text-error text-sm mt-1"
+    >
+      <div *ngIf="editForm.get('fullName')?.errors?.['required']">
+        Full Name is required.
+      </div>
+      <div *ngIf="editForm.get('fullName')?.errors?.['minlength']">
+        Full Name must be at least 2 characters.
+      </div>
+    </div>
+  </div>
+
+  <div class="form-control w-full">
+    <label class="label">
+      <span class="label-text font-medium">Email</span>
+    </label>
+    <input
+      type="email"
+      id="email"
+      class="input input-bordered w-full"
+      [ngClass]="{
+        'input-error':
+          editForm.get('email')?.invalid &&
+          (editForm.get('email')?.touched || formSubmitted)
+      }"
+      formControlName="email"
+    />
+    <div
+      *ngIf="
+        editForm.get('email')?.invalid &&
+        (editForm.get('email')?.touched || formSubmitted)
+      "
+      class="text-error text-sm mt-1"
+    >
+      <div *ngIf="editForm.get('email')?.errors?.['required']">
+        Email is required.
+      </div>
+      <div *ngIf="editForm.get('email')?.errors?.['email']">
+        Invalid email format.
+      </div>
+    </div>
+  </div>
+
+  <div class="form-control">
+    <label class="label cursor-pointer justify-start gap-2">
+      <input
+        type="checkbox"
+        class="checkbox checkbox-primary"
+        id="isActive"
+        formControlName="isActive"
+      />
+      <span class="label-text">Active</span>
+    </label>
+  </div>
+
+  <div class="flex gap-2 mt-6">
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="editForm.invalid || busyService.isLoading()"
+    >
+      💾 Save Changes
+    </button>
+    <button type="button" class="btn btn-ghost" (click)="cancel()">
+      ❌ Cancel
+    </button>
+  </div>
+</form>

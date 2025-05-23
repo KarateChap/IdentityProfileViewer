@@ -1,0 +1,52 @@
+<div class="card bg-base-100 shadow-xl">
+  <div class="card-body">
+    <div class="flex justify-between items-center">
+      <h2 class="card-title">📝 User Details</h2>
+      <button class="btn btn-primary btn-sm" (click)="requestEdit()">
+        ✏️ Edit
+      </button>
+    </div>
+
+    <div class="divider"></div>
+
+    <div *ngIf="user" class="space-y-4">
+      <div class="grid grid-cols-3 gap-4 items-center">
+        <div class="font-bold">User ID:</div>
+        <div class="col-span-2">{{ user.userId }}</div>
+      </div>
+
+      <div class="grid grid-cols-3 gap-4 items-center">
+        <div class="font-bold">Full Name:</div>
+        <div class="col-span-2">{{ user.fullName }}</div>
+      </div>
+
+      <div class="grid grid-cols-3 gap-4 items-center">
+        <div class="font-bold">Email:</div>
+        <div class="col-span-2">{{ user.email }}</div>
+      </div>
+
+      <div class="grid grid-cols-3 gap-4 items-center">
+        <div class="font-bold">Source System:</div>
+        <div class="col-span-2">{{ user.sourceSystem }}</div>
+      </div>
+
+      <div class="grid grid-cols-3 gap-4 items-center">
+        <div class="font-bold">Last Updated:</div>
+        <div class="col-span-2">{{ user.lastUpdated | date : "medium" }}</div>
+      </div>
+
+      <div class="grid grid-cols-3 gap-4 items-center">
+        <div class="font-bold">Status:</div>
+        <div class="col-span-2">
+          <div
+            class="badge badge-lg font-bold"
+            [class.badge-success]="user.isActive"
+            [class.badge-secondary]="!user.isActive"
+          >
+            {{ user.isActive ? "Active" : "Inactive" }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

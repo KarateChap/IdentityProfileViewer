@@ -1,0 +1,33 @@
+.container {
+  @apply max-w-7xl;
+}
+
+.card {
+  @apply rounded-xl border border-base-300;
+}
+
+.card-body {
+  @apply p-6;
+}
+
+.card-title {
+  @apply text-xl font-bold mb-4;
+}
+
+.loading {
+  @apply text-primary;
+}
+
+/* Custom animations */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}

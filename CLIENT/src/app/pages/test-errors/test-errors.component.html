@@ -1,0 +1,26 @@
+<div class="card bg-base-100 shadow-xl">
+  <div class="card-body">
+    <h2 class="card-title text-warning">⚠️ Error Testing Panel</h2>
+    <p class="text-sm text-gray-500 mb-4">
+      For Super Admin use only. Click buttons to test API error responses.
+    </p>
+
+    <div class="flex flex-wrap gap-2">
+      <button class="btn btn-sm btn-error" (click)="get404Error()">
+        Test 404 Error
+      </button>
+      <button class="btn btn-sm btn-error" (click)="get400Error()">
+        Test 400 Error
+      </button>
+      <button class="btn btn-sm btn-error" (click)="get500Error()">
+        Test 500 Error
+      </button>
+      <button class="btn btn-sm btn-error" (click)="get401Error()">
+        Test 401 Error
+      </button>
+      <!-- <button class="btn btn-sm btn-error" (click)="getValidationError()">
+        Test Validation Error
+      </button> -->
+    </div>
+  </div>
+</div>
